@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# ATL cache files
+.awcache/
+
+# Compiled files
+dist/
