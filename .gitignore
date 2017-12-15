@@ -60,5 +60,8 @@ typings/
 # ATL cache files
 .awcache/
 
+# Glide-vendored files
+vendor/
+
 # Compiled files
 dist/

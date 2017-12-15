@@ -1,0 +1,8 @@
+package: github.com/fsufitch/websnake
+import:
+- package: github.com/gorilla/mux
+  version: ^1.6.0
+- package: github.com/urfave/cli
+  version: ^1.20.0
+- package: github.com/NYTimes/gziphandler
+  version: ^1.0.0
