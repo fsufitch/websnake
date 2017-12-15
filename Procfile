@@ -1,2 +1,2 @@
 web: websnake serve
-webpack-server: npm run webpack:server
+webpack-server: node_modules/.bin/webpack-dev-server --color
