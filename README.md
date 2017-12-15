@@ -1,4 +1,4 @@
-# Websnake - a small multiplayer web GetPathTemplate
+# Websnake - a small multiplayer web game
 
 ## Requirements
 
