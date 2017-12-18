@@ -1,10 +1,15 @@
 package ui
 
-import "time"
+import (
+	"crypto/md5"
+	"encoding/base64"
+	"time"
+)
 
 type cacheEntry struct {
 	Data        []byte
 	ContentType string
+	ETag        string
 	Timestamp   time.Time
 	Error       error
 }
@@ -26,6 +31,7 @@ func newCacheMap(ttl time.Duration) *cacheMap {
 func (p cacheMap) Set(key string, value []byte, contentType string) cacheEntry {
 	p.Cache[key] = cacheEntry{
 		Data:        value,
+		ETag:        calculateETag(value),
 		ContentType: contentType,
 		Timestamp:   time.Now(),
 		Error:       nil,
@@ -37,6 +43,7 @@ func (p cacheMap) Set(key string, value []byte, contentType string) cacheEntry {
 func (p cacheMap) SetError(key string, err error) cacheEntry {
 	p.Cache[key] = cacheEntry{
 		Data:      []byte{},
+		ETag:      "",
 		Timestamp: time.Now(),
 		Error:     err,
 	}
@@ -61,4 +68,9 @@ func (p cacheMap) Get(key string) (result cacheEntry, ok bool) {
 		}
 	}
 	return
+}
+
+func calculateETag(data []byte) string {
+	md5sum := md5.Sum(data)
+	return base64.StdEncoding.EncodeToString(md5sum[:])
 }

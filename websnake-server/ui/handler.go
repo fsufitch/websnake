@@ -41,15 +41,23 @@ func (h semiStaticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		cacheEntry, _ = h.CacheMap.Get(fullPath)
 	}
 
-	if cacheEntry.Error == nil {
-		w.Header().Set("Content-Type", cacheEntry.ContentType)
-		w.WriteHeader(http.StatusOK)
-		w.Write(cacheEntry.Data)
-	} else {
+	if cacheEntry.Error != nil {
 		w.Header().Set("Content-Type", "text/plain")
 		w.WriteHeader(http.StatusNotFound)
 		w.Write([]byte(cacheEntry.Error.Error()))
+		return
 	}
+
+	if r.Header.Get("If-None-Match") == cacheEntry.ETag {
+		w.Header().Set("Etag", cacheEntry.ETag)
+		w.WriteHeader(http.StatusNotModified)
+		return
+	}
+
+	w.Header().Set("Content-Type", cacheEntry.ContentType)
+	w.Header().Set("Etag", cacheEntry.ETag)
+	w.WriteHeader(http.StatusOK)
+	w.Write(cacheEntry.Data)
 }
 
 func readFile(path string) (data []byte, mimeType string, ok bool) {
