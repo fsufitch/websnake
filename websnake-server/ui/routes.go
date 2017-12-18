@@ -9,7 +9,7 @@ import (
 
 // ApplyUIRoutes adds the UI file routes to the router
 func ApplyUIRoutes(r *mux.Router) error {
-	log.Debug.Print("Applying UI proxy routes...")
+	log.Debug.Print("Applying UI routes...")
 
 	config, err := config.GetConfig()
 	if err != nil {

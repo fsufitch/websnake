@@ -9,6 +9,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/fsufitch/websnake/websnake-server/log"
 	"github.com/gorilla/mux"
 )
 
@@ -61,6 +62,7 @@ func (h semiStaticHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func readFile(path string) (data []byte, mimeType string, ok bool) {
+	log.Debug.Printf("Reading `%s`", path)
 	data, err := ioutil.ReadFile(path)
 	ok = err == nil
 

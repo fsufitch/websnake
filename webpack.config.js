@@ -44,6 +44,10 @@ module.exports = () => {
       alias: 'jquery',
       name: 'jquery/src/jquery',
     }],
+    modules: [
+      root('.'),
+      'node_modules',
+    ],
   };
 
   var atlConfigFile = root('websnake-frontend', 'tsconfig.json');
