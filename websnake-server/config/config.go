@@ -3,7 +3,6 @@ package config
 import (
 	"errors"
 	"fmt"
-	"net/url"
 	"os"
 	"strconv"
 	"time"
@@ -14,11 +13,11 @@ import (
 // ServerConfiguration is a struct encompassing arguments the server is to
 // be configured with
 type ServerConfiguration struct {
-	Port               int
-	APIHost            string
-	BaseUIResourcesURL *url.URL
-	ProxyCacheTTL      time.Duration
-	DebugLogsEnabled   bool
+	Port             int
+	APIHost          string
+	UIStaticPath     string
+	CacheTTL         time.Duration
+	DebugLogsEnabled bool
 }
 
 func (s ServerConfiguration) getServeAddress() string {
@@ -50,25 +49,25 @@ func buildConfig() (config *ServerConfiguration, err error) {
 	}
 	log.Info.Printf("APIHost = %v", config.APIHost)
 
-	if uiResURLStr, ok := os.LookupEnv("UI_RES_URL"); ok {
-		config.BaseUIResourcesURL, err = url.Parse(uiResURLStr)
+	if uiStaticPath, ok := os.LookupEnv("UI_STATIC_PATH"); ok {
+		config.UIStaticPath = uiStaticPath
 	} else {
-		err = errors.New("UI_RES_URL env variable not found")
+		err = errors.New("UI_STATIC_PATH env variable not found")
 	}
 	if err != nil {
 		return
 	}
-	log.Info.Printf("BaseUIResourcesURL = %v", config.BaseUIResourcesURL.String())
+	log.Info.Printf("UIStaticPath = %v", config.UIStaticPath)
 
-	if proxyCacheTTLStr, ok := os.LookupEnv("PROXY_TTL"); ok {
+	if cacheTTLStr, ok := os.LookupEnv("CACHE_TTL"); ok {
 		var seconds int
-		seconds, err = strconv.Atoi(proxyCacheTTLStr)
-		config.ProxyCacheTTL = time.Duration(seconds) * time.Second
+		seconds, err = strconv.Atoi(cacheTTLStr)
+		config.CacheTTL = time.Duration(seconds) * time.Second
 	} else {
-		config.ProxyCacheTTL = 1 * time.Second
-		log.Error.Printf("PROXY_TTL env variable not found; using default: %vs", config.ProxyCacheTTL.Seconds())
+		config.CacheTTL = 1 * time.Second
+		log.Error.Printf("PROXY_TTL env variable not found; using default: %vs", config.CacheTTL.Seconds())
 	}
-	log.Info.Printf("ProxyCacheTTL = %vs", config.ProxyCacheTTL.Seconds())
+	log.Info.Printf("ProxyCacheTTL = %vs", config.CacheTTL.Seconds())
 
 	if debugLogsEnabledStr, ok := os.LookupEnv("DEBUG"); ok {
 		config.DebugLogsEnabled, _ = strconv.ParseBool(debugLogsEnabledStr)

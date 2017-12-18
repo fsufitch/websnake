@@ -2,29 +2,29 @@ package ui
 
 import "time"
 
-type proxyCacheEntry struct {
+type cacheEntry struct {
 	Data        []byte
 	ContentType string
 	Timestamp   time.Time
 	Error       error
 }
 
-type proxyCacheMap struct {
-	Cache map[string]proxyCacheEntry
+type cacheMap struct {
+	Cache map[string]cacheEntry
 	TTL   time.Duration
 }
 
-// newProxyCacheMap creates a new proxy cache map
-func newProxyCacheMap(ttl time.Duration) *proxyCacheMap {
-	return &proxyCacheMap{
-		Cache: map[string]proxyCacheEntry{},
+// newCacheMap creates a new proxy cache map
+func newCacheMap(ttl time.Duration) *cacheMap {
+	return &cacheMap{
+		Cache: map[string]cacheEntry{},
 		TTL:   ttl,
 	}
 }
 
 // Set adds a successful value to the cache
-func (p proxyCacheMap) Set(key string, value []byte, contentType string) proxyCacheEntry {
-	p.Cache[key] = proxyCacheEntry{
+func (p cacheMap) Set(key string, value []byte, contentType string) cacheEntry {
+	p.Cache[key] = cacheEntry{
 		Data:        value,
 		ContentType: contentType,
 		Timestamp:   time.Now(),
@@ -34,8 +34,8 @@ func (p proxyCacheMap) Set(key string, value []byte, contentType string) proxyCa
 }
 
 // Set adds a failed value to the cache
-func (p proxyCacheMap) SetError(key string, err error) proxyCacheEntry {
-	p.Cache[key] = proxyCacheEntry{
+func (p cacheMap) SetError(key string, err error) cacheEntry {
+	p.Cache[key] = cacheEntry{
 		Data:      []byte{},
 		Timestamp: time.Now(),
 		Error:     err,
@@ -44,12 +44,12 @@ func (p proxyCacheMap) SetError(key string, err error) proxyCacheEntry {
 }
 
 // Delete removes a value from the cache
-func (p proxyCacheMap) Delete(key string) {
+func (p cacheMap) Delete(key string) {
 	delete(p.Cache, key)
 }
 
 // Get retrieves a cache entry
-func (p proxyCacheMap) Get(key string) (result proxyCacheEntry, ok bool) {
+func (p cacheMap) Get(key string) (result cacheEntry, ok bool) {
 	entry, ok := p.Cache[key]
 	if ok {
 		age := time.Now().Sub(entry.Timestamp)

@@ -1,14 +1,6 @@
 hash: 1fc1a9bcfbaff3170f329f9ffd47c35ff6e96d62a3ad47c4d97b4b19890b82b5
-updated: 2017-12-15T14:56:03.988227241-05:00
+updated: 2017-12-18T13:03:49.272594488-05:00
 imports:
-- name: github.com/fsufitch/prez-tweet
-  version: ad4c16b3bbaa45645ff5bff2a85339a1f48cbbb2
-  subpackages:
-  - prez-tweet-server/status
-  - prez-tweet-server/ui
-  - prez-tweet-server/util
-- name: github.com/gorilla/context
-  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
 - name: github.com/gorilla/mux
   version: 7f08801859139f86dfafd1c296e2cba9a80d292e
 - name: github.com/NYTimes/gziphandler

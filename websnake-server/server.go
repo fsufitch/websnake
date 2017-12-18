@@ -16,7 +16,7 @@ func createRoutes() (router *mux.Router, err error) {
 	router = mux.NewRouter()
 	router.StrictSlash(true)
 
-	err = ui.ApplyUIProxyRoutes(router)
+	err = ui.ApplyUIRoutes(router)
 	if err != nil {
 		return
 	}
